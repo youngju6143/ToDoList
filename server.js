@@ -31,7 +31,7 @@ app.post('/add', (req, res) => {
     db.collection('post').insertOne({title: req.body.title, date: req.body.date}, (err, result) => {
         res.send(req.body)
     })
-}) 
+})  
 
 app.use(express.static(path.join(__dirname, 'react/build')));
 app.get('*', (req, res) => {
