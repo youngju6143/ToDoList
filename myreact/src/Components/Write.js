@@ -6,7 +6,6 @@ function Write() {
 
     let [date, setDate] = useState("")
     let [title, setTitle] = useState("")
-    let [modal, setModal] = useState(false)
 
 
     return (
@@ -37,14 +36,14 @@ function InputToDo(props) {
     return (
       <div>
         <div style={{padding: '10px'}}>
-            <label style={{fontSize: "20px", color : "black"}}> todo </label>
+            <label style={{fontSize: "18px", color : "black"}}> todo </label>
             <input type="text" name="title" placeholder="할 일을 입력하세요" onChange={(e) => {
                 props.setTitle(e.target.value)
             }}></input>
         </div>
 
         <div style={{padding: '10px'}}>
-            <label style={{fontSize: "20px", color : "black"}} name="date"> 날짜 </label>
+            <label style={{fontSize: "18px", color : "black"}} name="date"> 날짜 </label>
             <input type="text" name="date" placeholder="언제까지 완료할 건가요?"onChange={(e) => {
                 props.setDate(e.target.value)
             }}></input>

@@ -42,10 +42,14 @@ Write.js랑 DB 연결하기 <- axios 사용 ⭕️ 와씨 이걸 성공했네ㅜ
 react랑 nodejs 연결하기 ⭕️
 useState 사용해서 input값을 DB로 옮기기 (일단은 todo만, login이랑 register은 필수 기능 다 구현하면 하기) ⭕️
 list 페이지 만들기 ⭕️
-/write에서 todo 작성하고 submit 누르면 /list에 자신이 적은 todo 뜨게 하기 (체크박스 todo 날짜)
 
 8/27 할 일
 DB 설계 더 자세히 하기
+/list에서 버튼 누르면 input 자리 초기화되는 거 만들기 & /list에 자신이 적은 todo 뜨게 하기 (체크박스 todo 날짜)
+/write 지워라
+login, register 기능 구현하기
+
+
 
 8/28 할 일 
 엉엉 너무 어려워요ㅜㅜ

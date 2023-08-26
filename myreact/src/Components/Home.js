@@ -6,8 +6,8 @@ function Home() {
 
     return (
         <div className="home"> 
-            <div style={{textAlign: "center"}}>
-                <h1 style={{color: "white", paddingTop: "10px"}}> To Do List  </h1>    
+            <div>
+                <h1 style={{color: "white", paddingTop: "10px",textAlign: "center"}}> To Do List  </h1>    
             </div>
             <button type="submit" className="startButton" onClick={ () => {navigate('/list')}}>Start</button>
         </div>

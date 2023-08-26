@@ -10,8 +10,9 @@
   background:rgb(255, 145, 220);
   color: white;
   width: 100;
-  padding-left : 30px ;
+  padding-left : 30px;
   font-weight: bold;
+  justify-content: center;
   display : flex;
 }
 
@@ -30,41 +31,79 @@
   display: flex;
 }
 
-.listTitle {
-  margin: 10px 10px 0 10px;
-  padding: 10px;
-  width: 606px;
-  height: 30px;
-  background: whitesmoke;
-  color: grey;
-  border-radius: 7px 7px 0 0;
+
+/* list */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .listBox {
-  margin: 0 10px 10px 10px;
+  margin: 20px;
   padding: 10px;
-  width: 600px;
-  height: 400px;
+  width: 540px;
+  height: 386px;
   background: white;
-  border : 3px rgb(255, 145, 220) solid;   
+  border : 3px rgb(255, 145, 220) solid;
 }
 
 .listItem {
   margin: 10px;
   padding: 10px;
-  width: 550px;
+  width: 500px;
   height: 19px;
-  flex-shrink: 0;
   border-radius: 7px;
   background: whitesmoke;
   box-shadow: 0px 2px 4px lightgrey;
 } 
+
+/* input */
+
+.inputBox {
+  margin: 20px;
+  padding: 5px;
+  width: 300px;
+  height: 400px;
+  background: rgb(255, 222, 255);
+  border-radius: 4px;
+  box-shadow: 0px 2px 4px lightgrey;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inputDate {
+  padding: 10px;
+  width: 200px;
+  border: 1px solid rgb(255, 145, 220);
+  border-radius: 5px;
+  font-size: 18px;
+  line-height: center;
+  justify-content: space-between;
+}
+.inputContent {
+  padding: 10px;
+  width: 200px;
+  height: 200px;
+  border: 1px solid rgb(255, 145, 220);
+  border-radius: 5px;
+  font-size: 18px;
+  line-height: center;
+  justify-content: space-between;
+}
+
+
 .todo{
   max-width: 500px;
   border: 1px black solid;
   margin: 20px;
   padding: 10px;
   box-shadow: 0px 2px 4px lightgrey;
-  border: none
+  border: none;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 /* button */

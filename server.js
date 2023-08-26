@@ -33,7 +33,7 @@ app.post('/add', (req, res) => {
     })
 })  
 
-app.use(express.static(path.join(__dirname, 'react/build')));
+app.use(express.static(path.join(__dirname, 'myreact/build')));
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '/react/build/index.html'))
+    res.sendFile(path.join(__dirname, '/myreact/build/index.html'))
 })
