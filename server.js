@@ -11,7 +11,7 @@ app.use(cors());
 var db;
 MongoClient.connect('mongodb+srv://youngju6143:dudwn0428!@youngju.tcx4coy.mongodb.net/?retryWrites=true&w=majority', { useUnifiedTopology: true } ,function(err, client) {
     if (err) return console.log(err)
-    db = client.db('toyProject')
+    db = client.db('toyProject') 
 
     app.listen(8000, function() {
         console.log('listening on 8000')
@@ -24,7 +24,9 @@ app.get('/write', (req, res) => {
 })
 
 app.get('/add', (req, res) => {
-    res.send('add 페이지')
+    db.collection('post').find().toArray((err, result)=>{
+        res.send(result)
+    })
 })
 
 app.post('/add', (req, res) => {

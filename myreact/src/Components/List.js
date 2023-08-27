@@ -3,12 +3,56 @@ import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 import axios from "axios"
 
+// import {data, addData} from './Data'
+
+const changeTitle = (e, setTitle) => {
+    setTitle(e.target.value) 
+}
+const changeDate = (e, setDate) => {
+    setDate(e.target.value)
+}
+const addTodo = (title, date, setTodo, setTitle, setDate, navigate) => {
+    const newTodo = {
+      title: title,
+      date: date
+    };
+    setTodo(prevTodo => [...prevTodo, newTodo]);
+    setTitle('');
+    setDate('');
+
+    axios.post('http://localhost:8000/add', newTodo)
+        .then((res) => {
+            navigate('/list')
+            console.log(res.data)
+        })
+        .catch((err) => {
+            console.log(err)
+    })
+
+    let input = document.querySelector('.inputDate')
+    input.value = ''
+    input = document.querySelector('.inputTitle')
+    input.value = ''
+  }
 
 function List() {
-    let navigate = useNavigate();
-
     let [date, setDate] = useState("")
     let [title, setTitle] = useState("")
+    let [todo, setTodo] = useState([])
+    let [inputValue, setInputValue] = useState('');
+
+    let navigate = useNavigate()
+
+    useEffect(() => {
+        axios.get('http://localhost:8000/add')  
+            .then((res) => { 
+                setTodo(res.data)
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+        })
+    }, [])
 
     return (
         <div> 
@@ -25,22 +69,29 @@ function List() {
             </div>
 
             <div className='container'>
-                {/* <h2 className='listTitle'> List 페이지예염 </h2> */}
                 <div className='inputBox'>
-                    {/* <input type='text' className='listInput'/> */}
-                    <InputToDo style={{justifyContent: "space-between"}}title={title} setTitle={setTitle} date={date} setDate={setDate}></InputToDo> 
+                    <InputToDo style={{justifyContent: "space-between"}} title={title} setTitle={setTitle} date={date} setDate={setDate} todo={todo} setTodo={setTodo}></InputToDo> 
                 </div>
                 
                 <div className='listBox'>
-                    <div className='listItem'></div>
-                    <div className='listItem'></div>
-                    <div className='listItem'></div>
-                    <div className='listItem'></div>
-                    <div className='listItem'></div>
-                    <div className='listItem'></div>
-                    <div className='listItem'></div>
-                    <div className='listItem'></div>
+                    {
+                        todo.map((a, i) => (
+                            <div className='listItem' key={i}>
+                                <input type='checkbox' />
+                                <div>
+                                    <span style={{whiteSpace: "nowrap"}}>{a.title}</span>
+                                    <span style={{}}>{a.date}</span>
+                                </div>
+                            </div>
+                        ))
+                    }
                 </div>
+            </div>
+            <div className="container">
+                <ul className="list-group">
+                
+                    
+                </ul>
             </div>
                 
                     {/* <button type="submit" className="submitButton" onClick={ () => {navigate('/write')}}> 작성하기 </button> */}
@@ -48,33 +99,34 @@ function List() {
         </div>
     )
 }
+
+
 function InputToDo(props) {
-    
     let navigate = useNavigate()
+
     return (
       <div>
         <div style={{padding: '10px'}}>
-            <input onChange={(e) => {
-                props.setDate(e.target.value)
-            }} type="text" name="date" placeholder="언제까지 완료할 건가요?" className='inputDate'></input>
+            <input onChange={(e) => 
+            changeDate(e, props.setDate)} 
+            type="date" 
+            className='inputDate'></input>
         </div>
 
         <div style={{padding: '10px'}}>
-            <input onChange={(e) => {
-                props.setTitle(e.target.value)
-            }} type="text" name="title" placeholder="할 일을 입력하세요" className='inputContent'></input>
+            <input onChange={(e) => 
+            changeTitle(e, props.setTitle)} 
+            type="text" 
+            placeholder="할 일을 입력하세요" 
+            className='inputTitle'></input>
         </div>
 
         <button type="submit" className="submitButton" onClick={() => {
-            axios.post('http://localhost:8000/add', {title: props.title, date: props.date})
-            .then((res) => {
-                navigate('/list')
-                console.log(res.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            addTodo(props.title, props.date, props.setTodo, props.setTitle, props.setDate, navigate)
         }}>todo!</button>
+       
+
+        
       </div>
     );
   }
