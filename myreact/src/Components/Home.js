@@ -8,7 +8,7 @@ function Home() {
         <div className='wrapper'> 
             <div className="home">
                 <h1 style={{color: "white", paddingTop: "8px",textAlign: "center"}}> To Do List  </h1>    
-                <button type="submit" className="startButton" onClick={ () => {navigate('/list')}}>Start</button>
+                <button type="submit" className="startButton" onClick={ () => {navigate('/login')}}>Start</button>
             </div>
         </div>
     )

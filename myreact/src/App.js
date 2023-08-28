@@ -5,6 +5,7 @@ import './App.css';
 
 import Home from './Components/Home'
 import List from './Components/List'
+import Login from './Components/Login'
 
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
     <div>
     <Routes>
       <Route path='/' element={<Home></Home>} />
-      {/* <Route path='/login' element={<Write></Write>} /> */}
+      <Route path='/login' element={<Login></Login>} />
       <Route path='/list' element={<List></List>} />
     </Routes>
     </div>

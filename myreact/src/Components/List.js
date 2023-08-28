@@ -59,7 +59,6 @@ function List() {
             <nav className="navbar">
                 <ul className='navbarMenu'>
                 <Link className='navbarMenu' to="/list"> home </Link>
-                <Link className='navbarMenu' to="/login"> login </Link>
                 <Link className='navbarMenu' to="/mypage"> mypage </Link>
                 </ul> 
             </nav>
