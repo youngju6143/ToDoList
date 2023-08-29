@@ -8,16 +8,9 @@ function Login() {
     let navigate = useNavigate()
 
     return (
-        <div> 
-            <nav className="navbar">
-                <ul className='navbarMenu'>
-                <Link className='navbarMenu' to="/list"> home </Link>
-                <Link className='navbarMenu' to="/mypage"> mypage </Link>
-                </ul> 
-            </nav>
-
+        <div>
             <div className='title'>
-                <p style={{fontSize: "30px", color : "white"}}> To Do List </p>
+                <h1 className='homeFont'> To Do List </h1>
             </div>
 
             <LoginForm></LoginForm>

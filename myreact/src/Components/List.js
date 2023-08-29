@@ -27,25 +27,34 @@ function List() {
                 console.log(err)
         })
     }
+    const deleteTodo = (id, i) => {
+        if(window.confirm('정말 삭제할까요?')) {
+            let copy = [...todo]
+            copy.splice(i,1)
+            setTodo(copy)
+            alert('삭제되었습니다.')
+
+            axios.delete(`http://localhost:8000/delete/${id}`)
+            .then((res) => { 
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    }
+    const now = new Date();
     
     return (
         <div> 
-            <nav className="navbar">
-                <ul className='navbarMenu'>
-                <Link className='navbarMenu' to="/list"> home </Link>
-                <Link className='navbarMenu' to="/mypage"> mypage </Link>
-                </ul> 
-            </nav>
-
             <div className='title'>
-                <p style={{fontSize: "30px", color : "white"}}> To Do List </p>
+                <h1 className='homeFont'> To Do List </h1>
             </div>
 
             <div className='container'>
                 <div className='inputBox'>
                     <InputToDo style={{justifyContent: "space-between"}} title={title} setTitle={setTitle} date={date} setDate={setDate} todo={todo} setTodo={setTodo}></InputToDo> 
                 </div>
-                
                 <div className='listBox'>
                     {
                         todo.map((a, i) => {
@@ -58,20 +67,7 @@ function List() {
                                     </div>
                                     <button className='deleteButton' data-id={todo._id} onClick={() => {
                                         var id = a._id
-                                        if(window.confirm('정말 삭제할까요?')) {
-                                            let copy = [...todo]
-                                            copy.splice(i,1)
-                                            setTodo(copy)
-                                            alert('삭제되었습니다.')
-
-                                            axios.delete(`http://localhost:8000/delete/${id}`)
-                                            .then((res) => { 
-                                                console.log(res.data)
-                                            })
-                                            .catch((err) => {
-                                                console.log(err)
-                                            })
-                                        }
+                                        deleteTodo(id, i)
                                         
                                     }} > 🗑️ </button>
                                 </div>
@@ -87,9 +83,6 @@ function List() {
                     
                 </ul>
             </div>
-                
-                    {/* <button type="submit" className="submitButton" onClick={ () => {navigate('/write')}}> 작성하기 </button> */}
-                    {/* <button type="submit" className="submitButton" onClick={console.log(',')}> 작성하기 </button> */}
         </div>
     )
 }

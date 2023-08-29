@@ -7,7 +7,7 @@ function Home() {
     return (
         <div className='wrapper'> 
             <div className="home">
-                <h1 style={{color: "white", paddingTop: "8px",textAlign: "center"}}> To Do List  </h1>    
+                <h1 className='homeFont'> To Do List  </h1>    
                 <button type="submit" className="startButton" onClick={ () => {navigate('/login')}}>Start</button>
             </div>
         </div>

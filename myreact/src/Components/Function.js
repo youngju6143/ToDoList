@@ -8,8 +8,8 @@ const changeDate = (e, setDate) => {
 }
 const addTodo = (title, date, setTodo, setTitle, setDate, navigate) => {
     const newTodo = {
-      title: title,
-      date: date
+        title: title,
+        date: date
     };
     setTodo(prevTodo => [...prevTodo, newTodo]);
     setTitle('');
@@ -28,6 +28,9 @@ const addTodo = (title, date, setTodo, setTitle, setDate, navigate) => {
     input.value = ''
     input = document.querySelector('.inputTitle')
     input.value = ''
-  }
+}
+
+
+
 
 export {changeDate, changeTitle, addTodo}
