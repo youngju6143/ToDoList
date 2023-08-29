@@ -3,43 +3,14 @@ import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 import axios from "axios"
 
-// import {data, addData} from './Data'
-
-const changeTitle = (e, setTitle) => {
-    setTitle(e.target.value) 
-}
-const changeDate = (e, setDate) => {
-    setDate(e.target.value)
-}
-const addTodo = (title, date, setTodo, setTitle, setDate, navigate) => {
-    const newTodo = {
-      title: title,
-      date: date
-    };
-    setTodo(prevTodo => [...prevTodo, newTodo]);
-    setTitle('');
-    setDate('');
-
-    axios.post('http://localhost:8000/add', newTodo)
-        .then((res) => {
-            navigate('/list')
-            console.log(res.data)
-        })
-        .catch((err) => {
-            console.log(err)
-    })
-
-    let input = document.querySelector('.inputDate')
-    input.value = ''
-    input = document.querySelector('.inputTitle')
-    input.value = ''
-  }
+import {changeDate, changeTitle, addTodo} from './Function'
 
 function List() {
     let [date, setDate] = useState("")
     let [title, setTitle] = useState("")
     let [todo, setTodo] = useState([])
     let [inputValue, setInputValue] = useState('');
+
 
     let navigate = useNavigate()
 
@@ -53,7 +24,7 @@ function List() {
                 console.log(err)
         })
     }, [])
-
+    
     return (
         <div> 
             <nav className="navbar">
@@ -74,16 +45,19 @@ function List() {
                 
                 <div className='listBox'>
                     {
-                        todo.map((a, i) => (
-                            <div className='listItem' key={i}>
-                                <input type='checkbox' />
-                                <div>
-                                    <span style={{whiteSpace: "nowrap"}}>{a.title}</span>
-                                    <span style={{}}>{a.date}</span>
+                        todo.map((a, i) => {
+                            return (
+                                <div className='listItem' key={i}>
+                                    <input type='checkbox' />
+                                    <div>
+                                        <span style={{whiteSpace: "nowrap"}}>{a.title}</span>
+                                        <span>{a.date}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            )
+                        })
                     }
+                   
                 </div>
             </div>
             <div className="container">
