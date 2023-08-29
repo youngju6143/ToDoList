@@ -11,7 +11,6 @@ function List() {
     let [todo, setTodo] = useState([])
     let [inputValue, setInputValue] = useState('');
 
-
     let navigate = useNavigate()
 
     useEffect(() => {
@@ -53,6 +52,20 @@ function List() {
                                         <span style={{whiteSpace: "nowrap"}}>{a.title}</span>
                                         <span>{a.date}</span>
                                     </div>
+                                    <button className='deleteButton' data-id={todo._id} onClick={() => {
+                                        var id = todo._id
+                                        axios.delete(`http://localhost:8000/delete/${id}`)
+                                        .then((res) => { 
+                                            let copy = [...todo]
+                                            copy.splice(i,1)
+                                            setTodo(copy)
+                                            console.log(res.data)
+                                        })
+                                        .catch((err) => {
+                                            console.log(err)
+                                        })
+                                        
+                                    }} >. </button>
                                 </div>
                             )
                         })
