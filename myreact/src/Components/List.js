@@ -14,6 +14,10 @@ function List() {
     let navigate = useNavigate()
 
     useEffect(() => {
+       fetchTodo()
+    }, [])
+
+    const fetchTodo = () => {
         axios.get('http://localhost:8000/add')  
             .then((res) => { 
                 setTodo(res.data)
@@ -22,7 +26,7 @@ function List() {
             .catch((err) => {
                 console.log(err)
         })
-    }, [])
+    }
     
     return (
         <div> 
@@ -53,19 +57,23 @@ function List() {
                                         <span>{a.date}</span>
                                     </div>
                                     <button className='deleteButton' data-id={todo._id} onClick={() => {
-                                        var id = todo._id
-                                        axios.delete(`http://localhost:8000/delete/${id}`)
-                                        .then((res) => { 
+                                        var id = a._id
+                                        if(window.confirm('정말 삭제할까요?')) {
                                             let copy = [...todo]
                                             copy.splice(i,1)
                                             setTodo(copy)
-                                            console.log(res.data)
-                                        })
-                                        .catch((err) => {
-                                            console.log(err)
-                                        })
+                                            alert('삭제되었습니다.')
+
+                                            axios.delete(`http://localhost:8000/delete/${id}`)
+                                            .then((res) => { 
+                                                console.log(res.data)
+                                            })
+                                            .catch((err) => {
+                                                console.log(err)
+                                            })
+                                        }
                                         
-                                    }} >. </button>
+                                    }} > 🗑️ </button>
                                 </div>
                             )
                         })

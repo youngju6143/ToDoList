@@ -3,7 +3,7 @@ const app = express()
 const path = require('path')
 const MongoClient = require('mongodb').MongoClient
 const cors = require('cors');
-var mongodb = require('mongodb');그
+var mongodb = require('mongodb');
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true})) // 나는 바보다.. 이 코드를 안 넣고 db에 데이터를 넘기려 하다니.. 난 바보다...
@@ -33,14 +33,13 @@ app.post('/add', (req, res) => {
 }) 
 
 app.delete('/delete/:id', (req, res) => {
-    db.collection('post').deleteone({_id: new mongodb.ObjectID(req.params.id)}, (err, result) =>{ 
+    db.collection('post').deleteOne({_id: new mongodb.ObjectID(req.params.id)}, (err, result) =>{ 
         if (err)
             res.status(500).send('fail')
         else
-            console.log(req.params.id + '삭제함')
+            res.send('success')
     })
 })
-
 
 
 app.use(express.static(path.join(__dirname, 'myreact/build')));
