@@ -6,29 +6,34 @@
 부가 기능
 4. 마이페이지 (자신이 쓴 todo만 확인)
 5. 로그인 / 회원 가입
+6. 검색 (아이디 검색하면 그 아이디 작성자가 쓴 todo만 뜨게 하는 기능)
 
 만들 웹페이지 링크들
 0. 시작페이지 : / : 말 그대로 시작 페이지
 1. 홈페이지 : /list ( 기능 1,2,3 ) - 모든 todo를 확인할 수 있는 페이지
 2. Todo작성 : /write : Todo를 새로 작성하는 페이지
 3. 로그인 / 회원가입 : /login ( 기능 4,5 ) 
+4. 검색 : /search( 기능 6 ) 
 5. 마이페이지 : /mypage/:id ( 기능 4 ) 
 
 api 구현
 필수 기능
 /               get             첫 시작 화면 페이지
-/list           post            todo 작성 페이지, 모든 todo 보여줌
+/list           post            모든 todo 보여줌
+/write          get, post       todo 작성 페이지, 작성 버튼 클릭하면 /list로 돌아감
 /delete         delete
 
 부가 기능
 /login          get, post       로그인 페이지, 로그인 버튼 클릭하면 /list로 돌아감
 /register       get, post       회원가입 페이지, 회원가입 버튼 클릭하면 /login으로 돌아감
+/search         get             검색 페이지
 /mypage/:id     get             마이페이지
 
 
 DB 설계
-1. writer : id, pw
-2. post : _id, title, date, writer
+1. count : count
+2. writer : id, pw
+3. post : _id, title, date, writer
 
 
 8/26 할 일 (약속 이슈로 많이 하진 못 함)
@@ -37,17 +42,12 @@ Write.js랑 DB 연결하기 <- axios 사용 ⭕️ 와씨 이걸 성공했네ㅜ
 react랑 nodejs 연결하기 ⭕️
 useState 사용해서 input값을 DB로 옮기기 (일단은 todo만, login이랑 register은 필수 기능 다 구현하면 하기) ⭕️
 list 페이지 만들기 ⭕️
-
+/write에서 todo 작성하고 submit 누르면 /list에 자신이 적은 todo 뜨게 하기 (체크박스 todo 날짜)
 
 8/27 할 일
 DB 설계 더 자세히 하기
-/list에서 버튼 누르면 input 자리 초기화되는 거 만들기 & /list에 자신이 적은 todo 뜨게 하기 (체크박스 todo 날짜) ⭕️
-/write 지워라 ⭕️
-login, register 기능 구현하기 <- 고냥 이건 나중에 할래
-
 
 8/28 할 일 
-엉엉 너무 어려워요ㅜㅜ
 css 디자인을 우선적으로 할 예정은 구라 삭제부터 해
 삭제 기능 구현
 삭제 아이콘 찾아서 날짜 뒤에 붙이기
@@ -58,5 +58,3 @@ css
 폰트 바꾸기
 체크박스를 아이콘 사용해서 만들기 ( 버튼으로 만들어야 함 )
 실시간 시계 추가하기
-
-
