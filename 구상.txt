@@ -42,19 +42,31 @@ Write.js랑 DB 연결하기 <- axios 사용 ⭕️ 와씨 이걸 성공했네ㅜ
 react랑 nodejs 연결하기 ⭕️
 useState 사용해서 input값을 DB로 옮기기 (일단은 todo만, login이랑 register은 필수 기능 다 구현하면 하기) ⭕️
 list 페이지 만들기 ⭕️
-/write에서 todo 작성하고 submit 누르면 /list에 자신이 적은 todo 뜨게 하기 (체크박스 todo 날짜)
+
 
 8/27 할 일
-DB 설계 더 자세히 하기
+DB 설계 더 자세히 하기 ⭕️
+/write 삭제해라 ⭕️
+/list에서 todo 작성하고 submit 버튼 누르면 /list에 자신이 적은 todo 뜨게 하기 (체크박스 todo 날짜) ⭕️
+login, register 페이지만 구현해놓기 ⭕️
 
 8/28 할 일 
-css 디자인을 우선적으로 할 예정은 구라 삭제부터 해
-삭제 기능 구현
-삭제 아이콘 찾아서 날짜 뒤에 붙이기
-삭제 버튼 누르면 그 todo가 없어지도록 만들기 (당연히 DB에서도 없애야 함) 
-    : 당연히 axios.delete 써야겠지..? 그리고 server.js에서 app.delete도 만들기
+삭제 기능 구현 ⭕️
+삭제 아이콘 찾아서 날짜 뒤에 붙이기 ⭕️
+삭제 버튼 누르면 그 todo가 없어지도록 만들기 (당연히 DB에서도 없애야 함)  ⭕️
+    : 당연히 axios.delete 써야겠지..? 그리고 server.js에서 app.delete도 만들기 ⭕️
 
-css
+
+
+8/29 할 일
+로그인, 회원가입 기능 구현하기
+    : axios.post, app.post 
+
+
+
+언젠가 할 일
 폰트 바꾸기
 체크박스를 아이콘 사용해서 만들기 ( 버튼으로 만들어야 함 )
 실시간 시계 추가하기
+이미지 넣을 거 있으면 찾아서 넣어보기
+여러 CSS 찾아보기
