@@ -29,14 +29,18 @@ function LoginForm(props) {
             <div>
                 <div style={{padding: '10px'}}>
                     <h2> 로그인 </h2>
-                    <input
+                    <input onChange={(e) => {
+                        props.setId(e.target.value) 
+                    }}
                     type="text" 
                     placeholder="아이디" 
                     className='inputDate'></input>
                 </div>
 
                 <div style={{padding: '10px'}}>
-                    <input
+                    <input onChange={(e) => {
+                        props.setPw(e.target.value) 
+                    }}
                     type="password" 
                     placeholder="비밀번호" 
                     className='inputDate'></input>
@@ -44,9 +48,14 @@ function LoginForm(props) {
 
                 <button type="submit" className="submitButton" onClick={() => {
                     axios.post('http://localhost:8000/login', {id: props.id, pw: props.pw})
-                    .then((res) => {
-                        navigate('/list')
-                        console.log(res.data)
+                    .then((result) => {
+                        if (result) {
+                            navigate('/list')
+                            console.log(result.data)
+                        }
+                        else { 
+                            alert('로그인에 실패했습니다.')
+                        }
                     })
                     .catch((err) => {
                         console.log(err)
@@ -75,9 +84,9 @@ function LoginForm(props) {
 
                 <button type="submit" className="submitButton" onClick={() => {
                     axios.post('http://localhost:8000/register', {id: props.id, pw: props.pw})
-                    .then((res) => {
+                    .then((result2) => {
                         navigate('/list')
-                        console.log(res.data)
+                        console.log(result2.data)
                     })
                     .catch((err) => {
                         console.log(err)
