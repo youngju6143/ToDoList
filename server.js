@@ -42,6 +42,14 @@ app.delete('/delete/:id', (req, res) => {
 })
 
 
+//login, register
+app.post('/register', (req, res) => {
+    db.collection('writer').insertOne({id: req.body.id, pw: req.body.pw}, (err, result) => {
+        res.send('success to register')
+    })
+})
+
+
 app.use(express.static(path.join(__dirname, 'myreact/build')));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/myreact/build/index.html'))

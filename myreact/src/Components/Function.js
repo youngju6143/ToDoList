@@ -32,5 +32,4 @@ const addTodo = (title, date, setTodo, setTitle, setDate, navigate) => {
 
 
 
-
 export {changeDate, changeTitle, addTodo}

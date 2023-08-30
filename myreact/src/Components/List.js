@@ -14,7 +14,7 @@ function List() {
     let navigate = useNavigate()
 
     useEffect(() => {
-       fetchTodo()
+        fetchTodo()
     }, [])
 
     const fetchTodo = () => {
@@ -27,6 +27,7 @@ function List() {
                 console.log(err)
         })
     }
+    
     const deleteTodo = (id, i) => {
         if(window.confirm('정말 삭제할까요?')) {
             let copy = [...todo]
@@ -43,7 +44,6 @@ function List() {
             })
         }
     }
-    const now = new Date();
     
     return (
         <div> 
