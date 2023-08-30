@@ -56,8 +56,6 @@ login, register 페이지만 구현해놓기 ⭕️
 삭제 버튼 누르면 그 todo가 없어지도록 만들기 (당연히 DB에서도 없애야 함)  ⭕️
     : 당연히 axios.delete 써야겠지..? 그리고 server.js에서 app.delete도 만들기 ⭕️
 
-
-
 8/29 할 일
 로그인, 회원가입 기능 구현하기
     : axios.post, app.post 
@@ -70,3 +68,4 @@ login, register 페이지만 구현해놓기 ⭕️
 실시간 시계 추가하기
 이미지 넣을 거 있으면 찾아서 넣어보기
 여러 CSS 찾아보기
+배포하기 전에 console.log 싹 다 지우기
