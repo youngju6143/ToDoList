@@ -2,12 +2,18 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const MongoClient = require('mongodb').MongoClient
+const mongodb = require('mongodb');
 const cors = require('cors');
-var mongodb = require('mongodb');
+const LocalStrategy = require('passport-local').Strategy //로그인
+const session = require('express-session')
+const passport = require('passport')
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true})) // 나는 바보다.. 이 코드를 안 넣고 db에 데이터를 넘기려 하다니.. 난 바보다...
+app.use(express.urlencoded({extended:true}))
+app.use(session({secret: '비밀코드', resave: true, saveUninitialized: false}))
 app.use(cors());
+app.use(passport.initialize())
+app.use(passport.session()) //로그인 세션을 위해 쓴 미들웨어
 
 
 var db;
@@ -49,8 +55,37 @@ app.post('/register', (req, res) => {
     })
 })
 
+app.post('/login', passport.authenticate('local', {failureRedirect: '/fail'}) ,(req, res) => {
+    db.collection('writer').findOne({_id: new mongodb.ObjectID(req.params.id)}).toArray(), (err, result) => {
+        res.redirect('/')
+    }
+})
 
 app.use(express.static(path.join(__dirname, 'myreact/build')));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/myreact/build/index.html'))
 })
+
+passport.use(new LocalStrategy({
+    usernameField: 'id',
+    passwordField: 'pw',
+    session: true,
+    passReqToCallback: false, //요청 이후 설정할 거 있는 지 물어보는 거
+}, function(inputId, inputPw, done) {
+    console.log(inputId, inputPw)
+    db.collection('writer').findOne({id: inputId}, (err, result) => {
+        if (err) console.log(err)
+        if (!result) return done(null, false, {message: '존재하지 않는 아이디입니다.'})
+        if (inputPw == result.pw) return done(null, result)
+        else return done(null, false, {message: '비밀번호를 틀렸습니다.'})
+    })
+})) // 로그인 기능 구현
+
+passport.serializeUser(function (user, done) {
+    done(null, user.id)
+  }); // 쿠키 만듦
+passport.deserializeUser(function (id, done) {
+    db.collection('writer').findOne({id: id}, (err, result) => {
+        done(null, result)
+    })
+}); 

@@ -42,9 +42,17 @@ function LoginForm(props) {
                     className='inputDate'></input>
                 </div>
 
-                <button type="submit" className="submitButton" onClick={() => {navigate('/list')}}> 로그인 </button>
+                <button type="submit" className="submitButton" onClick={() => {
+                    axios.post('http://localhost:8000/login', {id: props.id, pw: props.pw})
+                    .then((res) => {
+                        navigate('/list')
+                        console.log(res.data)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+                    }}> 로그인 </button>
             </div>
-
             <div>
                 <div style={{padding: '10px'}}>
                     <h2> 회원가입 </h2>
