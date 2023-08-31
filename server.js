@@ -83,7 +83,7 @@ app.post('/register', (req, res) => {
 //     }
 // }
 
-app.post('/login', passport.authenticate('local', {failureRedirect: '/fail'}) ,(req, res) => {
+app.post('/login', passport.authenticate('local', {failureRedirect: '/login'}) ,(req, res) => {
     res.send('success to login')
 })
 

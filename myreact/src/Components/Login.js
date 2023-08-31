@@ -49,12 +49,13 @@ function LoginForm(props) {
                 <button type="submit" className="submitButton" onClick={() => {
                     axios.post('http://localhost:8000/login', {id: props.id, pw: props.pw})
                     .then((result2) => {
-                        if (result2) {
+                        if (result2.data == 'success to login') {
+                            alert('로그인을 성공했습니다!')
                             navigate('/list')
                             console.log(result2.data)
                         }
                         else { 
-                            alert('로그인에 실패했습니다.')
+                            alert('로그인 실패, 다시 입력해주세요.')
                         }
                     })
                     .catch((err) => {
