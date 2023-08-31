@@ -6,9 +6,11 @@ import axios from "axios"
 import {changeDate, changeTitle, addTodo} from './Function'
 
 function List() {
+    let [id, setId] = useState("")
     let [date, setDate] = useState("")
     let [title, setTitle] = useState("")
     let [todo, setTodo] = useState([])
+    let [writer, setWriter] = useState("")
     let [inputValue, setInputValue] = useState('');
 
     let navigate = useNavigate()
@@ -20,6 +22,7 @@ function List() {
     const fetchTodo = () => {
         axios.get('http://localhost:8000/add')  
             .then((res) => { 
+                setId(res.data)
                 setTodo(res.data)
                 console.log(res.data)
             })
@@ -27,6 +30,7 @@ function List() {
                 console.log(err)
         })
     }
+    
     
     const deleteTodo = (id, i) => {
         if(window.confirm('정말 삭제할까요?')) {
@@ -53,7 +57,7 @@ function List() {
 
             <div className='container'>
                 <div className='inputBox'>
-                    <InputToDo style={{justifyContent: "space-between"}} title={title} setTitle={setTitle} date={date} setDate={setDate} todo={todo} setTodo={setTodo}></InputToDo> 
+                    <InputToDo style={{justifyContent: "space-between"}} title={title} setTitle={setTitle} date={date} setDate={setDate} writer={writer} setWriter={setWriter} todo={todo} setTodo={setTodo}></InputToDo> 
                 </div>
                 <div className='listBox'>
                     {
@@ -109,11 +113,12 @@ function InputToDo(props) {
         </div>
 
         <button type="submit" className="submitButton" onClick={() => {
-            addTodo(props.title, props.date, props.setTodo, props.setTitle, props.setDate, navigate)
+            addTodo(props.title, props.date, props.writer, props.setTodo, props.setTitle, props.setDate, props.setWriter, navigate)
         }}>todo!</button>
        
 
-        
+        <button type="submit" className="submitButton" onClick={() => {navigate('/mypage')
+        }}> mypage </button>
       </div>
     );
   }
