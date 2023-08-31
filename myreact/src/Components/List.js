@@ -5,6 +5,7 @@ import axios from "axios"
 
 import {changeDate, changeTitle, addTodo} from './Function'
 
+
 function List() {
     let [date, setDate] = useState("")
     let [title, setTitle] = useState("")
@@ -15,7 +16,9 @@ function List() {
 
     useEffect(() => {
         fetchTodo()
-        fetchUser()
+    }, [])
+    useEffect(() => {
+        fetchUserData()
     }, [])
 
     const fetchTodo = () => {
@@ -28,10 +31,13 @@ function List() {
                 console.log(err)
         })
     }
-    const fetchUser = () => {
-        axios.get(`http://localhost:8000/add/${writer}`)  
+    const fetchUserData = () => {
+        axios.get(`http://localhost:8000/mypage/${writer}`)  
             .then((res) => { 
-                setWriter(res.data.writer)
+                setWriter(res.data)
+                let copy = [...todo]
+                copy.push(writer)
+                setTodo(copy)
                 console.log(res.data)
             })
             .catch((err) => {
@@ -41,13 +47,12 @@ function List() {
     
     const deleteTodo = (id, i) => {
         if(window.confirm('정말 삭제할까요?')) {
-            let copy = [...todo]
-            copy.splice(i,1)
-            setTodo(copy)
-            alert('삭제되었습니다.')
-
             axios.delete(`http://localhost:8000/delete/${id}`)
             .then((res) => { 
+                let copy = [...todo]
+                copy.splice(i,1)
+                setTodo(copy)
+                alert('삭제되었습니다.')
                 console.log(res.data)
             })
             .catch((err) => {
@@ -55,7 +60,8 @@ function List() {
             })
         }
     }
-    
+    const filteredTodo = todo.filter(current => current.writer === writer) 
+
     return (
         <div> 
             <div className='title'>
@@ -68,7 +74,7 @@ function List() {
                 </div>
                 <div className='listBox'>
                     {
-                        todo.map((a, i) => {
+                        filteredTodo.map((a, i) => {
                             return (
                                 <div className='listItem' key={i}>
                                     <input type='checkbox' />
@@ -76,10 +82,9 @@ function List() {
                                         <span style={{whiteSpace: "nowrap"}}>{a.title}</span>
                                         <span>{a.date}</span>
                                     </div>
-                                    <button className='deleteButton' data-id={todo._id} onClick={() => {
+                                    <button className='deleteButton' data-id={filteredTodo._id} onClick={() => {
                                         var id = a._id
                                         deleteTodo(id, i)
-                                        
                                     }} > 🗑️ </button>
                                 </div>
                             )
@@ -100,6 +105,7 @@ function List() {
 
 
 function InputToDo(props) {
+    
     let navigate = useNavigate()
 
     return (
@@ -122,10 +128,6 @@ function InputToDo(props) {
         <button type="submit" className="submitButton" onClick={() => {
             addTodo(props.title, props.date, props.setTodo, props.setTitle, props.setDate, navigate)
         }}>todo!</button>
-       
-
-        <button type="submit" className="submitButton" onClick={() => {navigate('/mypage')
-        }}> mypage </button>
       </div>
     );
   }

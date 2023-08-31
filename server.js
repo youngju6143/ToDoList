@@ -37,24 +37,22 @@ app.get('/add', (req, res) => {
     })
 })
 
-app.get('/add/:id', (req, res) => {
-    res.send(req.user.id)
-})
-
 app.post('/add', (req, res) => {
-    console.log('req.user.id : ' + req.user.id)
     db.collection('post').insertOne({title: req.body.title, date: req.body.date, writer: req.user.id}, (err, result) => {
-        res.send(req.body)
-        
+        if (result.deletedCount == 0)
+            res.status(500).send('fail')
+        else
+            res.send('success')
     })
 }) 
 
 app.delete('/delete/:id', (req, res) => {
-    db.collection('post').deleteOne({_id: new mongodb.ObjectID(req.params.id)}, (err, result) =>{ 
-        if (err)
-            res.status(500).send('fail')
+    var user = req.user.id
+    db.collection('post').deleteOne({_id: new mongodb.ObjectID(req.params.id), writer: user}, (err, result) =>{ 
+        if (result.deletedCount == 0)
+            res.send('fail')
         else
-            res.send('success')
+            res.send(req.body)
     })
 })
 
@@ -82,17 +80,9 @@ app.post('/login', passport.authenticate('local', {failureRedirect: '/login'}) ,
 //     })
 // })
 
-app.get('/mypage', Logined, (req, res) => {
+app.get('/mypage', (req, res) => {
     res.send(req.user.id)
 })
-
-function Logined(req, res, next) {
-    if (req.user) {
-        next()
-    } else {
-        res.send("Not Logined")
-    }
-}
 
 passport.use(new LocalStrategy({
     usernameField: 'id',
