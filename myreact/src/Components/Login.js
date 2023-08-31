@@ -48,10 +48,10 @@ function LoginForm(props) {
 
                 <button type="submit" className="submitButton" onClick={() => {
                     axios.post('http://localhost:8000/login', {id: props.id, pw: props.pw})
-                    .then((result) => {
-                        if (result) {
+                    .then((result2) => {
+                        if (result2) {
                             navigate('/list')
-                            console.log(result.data)
+                            console.log(result2.data)
                         }
                         else { 
                             alert('로그인에 실패했습니다.')
@@ -85,9 +85,15 @@ function LoginForm(props) {
                 <button type="submit" className="submitButton" onClick={() => {
                     axios.post('http://localhost:8000/register', {id: props.id, pw: props.pw})
                     .then((result2) => {
-                        navigate('/list')
-                        console.log(result2.data)
-                    })
+                        if (result2.data == 'success to register') {
+                            alert('회원가입이 완료되었습니다!')
+                            navigate('/list')
+                            console.log(result2.data)
+                        }
+                        else {
+                            alert('회원가입 실패 : 중복된 아이디가 존재합니다!')
+                        }
+                    }) 
                     .catch((err) => {
                         console.log(err)
                     })

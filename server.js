@@ -38,7 +38,7 @@ app.get('/add', (req, res) => {
 })
 
 app.post('/add', (req, res) => {
-    db.collection('post').insertOne({title: req.body.title, date: req.body.date}, (err, result) => {
+    db.collection('post').insertOne({title: req.body.title, date: req.body.date, writer: req.user.id}, (err, result) => {
         res.send(req.body)
     })
 }) 
@@ -53,15 +53,40 @@ app.delete('/delete/:id', (req, res) => {
 })
 
 app.post('/register', (req, res) => {
-    db.collection('writer').insertOne({id: req.body.id, pw: req.body.pw}, (err, result) => {
-        res.send('success to register')
+    db.collection('writer').findOne({id: req.body.id}, (err, result) => { 
+        if (result) {
+            res.send('중복된 아이디 (server)')
+        }
+        else (
+            db.collection('writer').insertOne({id: req.body.id, pw: req.body.pw}, (err, result) => {
+                res.send('success to register')
+            })
+        )
     })
 })
 
+// compareId(result.id, req.body.id, (err, result2) => {
+//     if (result2) {
+//         db.collection('writer').insertOne({id: req.body.id, pw: req.body.pw}, (err, result3) => {
+//             res.send('success to register')
+//         })
+//     } else {
+//         res.send('중복된 아이디입니다.')
+//     }
+// })
+
+// function compareId(inputId, id, callback) {
+//     if (inputId == id) {
+//         callback(null, true);
+//     } else {
+//         callback(null, false);
+//     }
+// }
+
 app.post('/login', passport.authenticate('local', {failureRedirect: '/fail'}) ,(req, res) => {
     res.send('success to login')
-    // res.redirect('/list')
 })
+
 
 
 passport.use(new LocalStrategy({
@@ -105,6 +130,7 @@ function comparePasswords(inputPw, pw, callback) {
         callback(null, false);
     }
 }
+
 
 passport.serializeUser(function (user, done) {
     done(null, user.id)

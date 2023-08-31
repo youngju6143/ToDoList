@@ -61,6 +61,12 @@ login, register 페이지만 구현해놓기 ⭕️
     : axios.post, app.post 
 
 
+8/31
+fail App.js에 추가
+쓸데없눈 고 지우기
+/list 들어가도 잘 들어가지므로 고쳐
+단방향 : crypyo
+양방향 : bcrypt
 
 언젠가 할 일
 폰트 바꾸기
