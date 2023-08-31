@@ -73,8 +73,8 @@ fail App.js에 추가
 마이페이지 구현하기
     로그인하고 그 로그인에 쓴 id를 받은 다음에
     /list에서 todo를 작성하고 버튼 누르면 그 DB에도 writer가 들어가야 함
-    : user.id 써야 하니까 쿠키 필요함 -> cookieParser 사용
-    : DB에 req.user.id 추가
+    : user.id 써야 하니까 쿠키 필요함 -> cookieParser 사용 ⭕️
+    : DB에 req.user.id 추가 ⭕️
     : 일단 /mypage 만들어서 임시로 되는지 확인해보고 되면은 /list 옮겨서 ㄱ
 
 언젠가 할 일

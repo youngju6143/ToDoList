@@ -6,16 +6,14 @@ const changeTitle = (e, setTitle) => {
 const changeDate = (e, setDate) => {
     setDate(e.target.value)
 }
-const addTodo = (title, date, writer, setTodo, setTitle, setDate, setWriter, navigate) => {
+const addTodo = (title, date, setTodo, setTitle, setDate, navigate) => {
     const newTodo = {
         title: title,
         date: date,
-        writer: writer
     };
     setTodo(prevTodo => [...prevTodo, newTodo]);
     setTitle('');
     setDate('');
-    setWriter('')
 
     axios.post('http://localhost:8000/add', newTodo)
         .then((res) => {
