@@ -17,35 +17,19 @@ function List() {
     useEffect(() => {
         fetchTodo()
     }, [])
-    // useEffect(() => {
-    //     fetchUserData()
-    // }, [])
 
     const fetchTodo = () => {
         axios.get('http://localhost:8000/add')  
             .then((res) => { 
                 setTodo(res.data[0])
-                setWriter(res.data[1])
+                setWriter(res.data[1]) //req.user.id 가져옴
                 console.log(res.data)
             })
             .catch((err) => {
                 console.log(err)
         })
     }
-    // const fetchUserData = () => {
-    //     axios.get(`http://localhost:8000/mypage/${writer}`)  
-    //         .then((res) => { 
-    //             setWriter(res.data)
-    //             let copy = [...todo]
-    //             copy.push(writer)
-    //             setTodo(copy)
-    //             console.log('res.data : ' + res.data)
-    //         })
-    //         .catch((err) => {
-    //             console.log(err)
-    //     })
-    // }
-    
+
     const deleteTodo = (id, i) => {
         if(window.confirm('정말 삭제할까요?')) {
             axios.delete(`http://localhost:8000/delete/${id}`)
@@ -61,18 +45,18 @@ function List() {
             })
         }
     }
-    // const filteredTodo = todo.filter(current => current.writer === writer) 
 
     return (
         <div> 
             <div className='title'>
                 <h1 className='homeFont'> To Do List </h1>
             </div>
-
+            {/* <p className='listTitle'> My List </p> */}
             <div className='container'>
                 <div className='inputBox'>
                     <InputToDo style={{justifyContent: "space-between"}} title={title} setTitle={setTitle} date={date} setDate={setDate} todo={todo} setTodo={setTodo}></InputToDo> 
-                </div>
+                </div>  
+                
                 <div className='listBox'>
                     {
                         todo.map((a, i) => {
@@ -83,7 +67,6 @@ function List() {
                                         <div>
                                             <span style={{whiteSpace: "nowrap"}}>{a.title}</span>
                                             <span>{a.date}</span>
-                                            <span>{a.writer}</span>
                                         </div>
                                         <button className='deleteButton' data-id={todo._id} onClick={() => {
                                             var id = a._id
@@ -92,17 +75,10 @@ function List() {
                                     </div> 
                                 )
                             }
-                            
                         })
                     }
-                   
+                    <div className='listItem'></div>
                 </div>
-            </div>
-            <div className="container">
-                <ul className="list-group">
-                
-                    
-                </ul>
             </div>
         </div>
     )
@@ -132,8 +108,6 @@ function InputToDo(props) {
         <button type="submit" className="submitButton" onClick={() => {
             addTodo(props.title, props.date, props.setTodo, props.setTitle, props.setDate, navigate)
         }}>todo!</button>
-        <button type="submit" className="submitButton" onClick={() => {navigate('/mypage')
-        }}>mypage!</button>
       </div>
     );
   }
