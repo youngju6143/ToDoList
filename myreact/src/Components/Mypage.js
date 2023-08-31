@@ -9,8 +9,10 @@ function Mypage() {
     let [writer, setWriter] = useState([])
     let [todo, setTodo] = useState([])
     useEffect(() => {
-        fetchUserData()
         fetchTodo()
+    }, [])
+    useEffect(() => {
+        fetchUserData()
     }, [])
 
     const fetchTodo = () => {
@@ -36,6 +38,21 @@ function Mypage() {
                 console.log(err)
         })
     }
+    const deleteTodo = (id, i) => {
+        if(window.confirm('정말 삭제할까요?')) {
+            axios.delete(`http://localhost:8000/delete/${id}`)
+            .then((res) => { 
+                let copy = [...todo]
+                copy.splice(i,1)
+                setTodo(copy)
+                alert('삭제되었습니다.')
+                console.log('res.data : ' + res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    }
 
     const filteredTodo = todo.filter(current => current.writer === writer) 
     return (
@@ -59,6 +76,7 @@ function Mypage() {
                                         </div>
                                     <button className='deleteButton' data-id={todo._id} onClick={() => {
                                         var id = a._id
+                                        deleteTodo(id, i)
                                     }} > 🗑️ </button>
                                 </div>
                             )

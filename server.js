@@ -32,15 +32,15 @@ MongoClient.connect('mongodb+srv://youngju6143:dudwn0428!@youngju.tcx4coy.mongod
 app.get('/add', (req, res) => {
     var user = req.user.id
     db.collection('post').find().toArray((err, result) => {
-        console.log(user) // => 잘 나와염
-        res.send(result)
+        console.log(user) // => 잘 나와염 
+        res.send([result, user])
     })
 })
 
 app.post('/add', (req, res) => {
     db.collection('post').insertOne({title: req.body.title, date: req.body.date, writer: req.user.id}, (err, result) => {
         if (result.deletedCount == 0)
-            res.status(500).send('fail')
+            res.send('fail')
         else
             res.send('success')
     })
@@ -74,15 +74,23 @@ app.post('/login', passport.authenticate('local', {failureRedirect: '/login'}) ,
     res.send('success to login')  
 })
 
-// app.post('/mypage/:id', (req, res) => {
-//     db.collection('post').findOne({writer: req.user.id}, (err, result) => {
-//         console.log(req.user.id)
-//     })
-// })
+app.post('/mypage/:id', (req, res) => {
+    db.collection('post').findOne({writer: req.user.id}, (err, result) => {
+        console.log(req.user.id)
+    })
+})
 
-app.get('/mypage', (req, res) => {
+app.get('/mypage', Logined, (req, res) => {
     res.send(req.user.id)
 })
+
+function Logined(req, res, next) {
+    if (req.user) {
+        next()
+    } else {
+        res.send("Not Logined")
+    }
+}
 
 passport.use(new LocalStrategy({
     usernameField: 'id',

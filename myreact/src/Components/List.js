@@ -17,33 +17,34 @@ function List() {
     useEffect(() => {
         fetchTodo()
     }, [])
-    useEffect(() => {
-        fetchUserData()
-    }, [])
+    // useEffect(() => {
+    //     fetchUserData()
+    // }, [])
 
     const fetchTodo = () => {
         axios.get('http://localhost:8000/add')  
             .then((res) => { 
-                setTodo(res.data)
+                setTodo(res.data[0])
+                setWriter(res.data[1])
                 console.log(res.data)
             })
             .catch((err) => {
                 console.log(err)
         })
     }
-    const fetchUserData = () => {
-        axios.get(`http://localhost:8000/mypage/${writer}`)  
-            .then((res) => { 
-                setWriter(res.data)
-                let copy = [...todo]
-                copy.push(writer)
-                setTodo(copy)
-                console.log(res.data)
-            })
-            .catch((err) => {
-                console.log(err)
-        })
-    }
+    // const fetchUserData = () => {
+    //     axios.get(`http://localhost:8000/mypage/${writer}`)  
+    //         .then((res) => { 
+    //             setWriter(res.data)
+    //             let copy = [...todo]
+    //             copy.push(writer)
+    //             setTodo(copy)
+    //             console.log('res.data : ' + res.data)
+    //         })
+    //         .catch((err) => {
+    //             console.log(err)
+    //     })
+    // }
     
     const deleteTodo = (id, i) => {
         if(window.confirm('정말 삭제할까요?')) {
@@ -53,14 +54,14 @@ function List() {
                 copy.splice(i,1)
                 setTodo(copy)
                 alert('삭제되었습니다.')
-                console.log(res.data)
+                console.log('res.data : ' + res.data)
             })
             .catch((err) => {
                 console.log(err)
             })
         }
     }
-    const filteredTodo = todo.filter(current => current.writer === writer) 
+    // const filteredTodo = todo.filter(current => current.writer === writer) 
 
     return (
         <div> 
@@ -74,20 +75,24 @@ function List() {
                 </div>
                 <div className='listBox'>
                     {
-                        filteredTodo.map((a, i) => {
-                            return (
-                                <div className='listItem' key={i}>
-                                    <input type='checkbox' />
-                                    <div>
-                                        <span style={{whiteSpace: "nowrap"}}>{a.title}</span>
-                                        <span>{a.date}</span>
-                                    </div>
-                                    <button className='deleteButton' data-id={filteredTodo._id} onClick={() => {
-                                        var id = a._id
-                                        deleteTodo(id, i)
-                                    }} > 🗑️ </button>
-                                </div>
-                            )
+                        todo.map((a, i) => {
+                            if (writer == a.writer) {
+                                return (
+                                    <div className='listItem' key={i}>
+                                        <input type='checkbox' />
+                                        <div>
+                                            <span style={{whiteSpace: "nowrap"}}>{a.title}</span>
+                                            <span>{a.date}</span>
+                                            <span>{a.writer}</span>
+                                        </div>
+                                        <button className='deleteButton' data-id={todo._id} onClick={() => {
+                                            var id = a._id
+                                            deleteTodo(id, i)
+                                        }} > 🗑️ </button>
+                                    </div> 
+                                )
+                            }
+                            
                         })
                     }
                    
@@ -102,7 +107,6 @@ function List() {
         </div>
     )
 }
-
 
 function InputToDo(props) {
     
@@ -128,6 +132,8 @@ function InputToDo(props) {
         <button type="submit" className="submitButton" onClick={() => {
             addTodo(props.title, props.date, props.setTodo, props.setTitle, props.setDate, navigate)
         }}>todo!</button>
+        <button type="submit" className="submitButton" onClick={() => {navigate('/mypage')
+        }}>mypage!</button>
       </div>
     );
   }
