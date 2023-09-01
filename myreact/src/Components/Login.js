@@ -8,8 +8,6 @@ function Login() {
     let [pw, setPw] = useState("")
     let navigate = useNavigate()
     
-    
-
     return (
         <div>
             <div className='title'>
@@ -102,7 +100,6 @@ function LoginForm(props) {
                     })
                     }}> 회원가입 </button>
             </div>
-            
         </div>
     )
 }
