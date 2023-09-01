@@ -13,11 +13,19 @@ function List() {
     let [todo, setTodo] = useState([])
     let [completed, setCompleted] = useState()
     let [writer, setWriter] = useState('');
+    
+    let [clock, setClock] = useState('')
 
     let navigate = useNavigate()
 
     useEffect(() => {
         fetchTodo()
+
+        const Clock = setInterval(() => {
+            let time = new Date()
+            setClock(time.getHours() + " : " + time.getMinutes() + " : " + time.getSeconds())
+        }, 1000)
+
     }, [])
     
 
@@ -34,11 +42,12 @@ function List() {
     }
 
 
-
     return (
         <div> 
             <div className='title'>
+                <div className='clock'></div>
                 <h1 className='homeFont'> To Do List </h1>
+                <div className='clock'>{clock}</div>
             </div>
             {/* <p className='listTitle'> My List </p> */}
             <div className='container'>

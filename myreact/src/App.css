@@ -24,10 +24,17 @@
 .title {
   background:rgb(247, 143, 179);
   color: white;
-  width: 100;
+  width: 100%;
   font-weight: bold;
-  justify-content: center;
+  justify-content: space-between;
   display : flex;
+}
+
+.clock {
+  width: 200px;
+  text-align: center;
+  line-height: 90.38px;
+  font-size: 24px;
 }
 
 /* list */
@@ -181,7 +188,7 @@
 .homeFont {
   font-family: Impact, Charcoal, fantasy;
   color: white;
-  padding-top: 8px;
+  padding-top: 3px;
   text-align: center;
 }
 
