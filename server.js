@@ -71,24 +71,6 @@ app.post('/login', passport.authenticate('local', {failureRedirect: '/login'}) ,
     res.send('success to login')  
 })
 
-// app.post('/mypage/:id', (req, res) => {
-//     db.collection('post').findOne({writer: req.user.id}, (err, result) => {
-//         console.log(req.user.id)
-//     })
-// })
-
-// app.get('/mypage', Logined, (req, res) => {
-//     res.send(req.user.id)
-// })
-
-// function Logined(req, res, next) {
-//     if (req.user) {
-//         next()
-//     } else {
-//         res.send("Not Logined")
-//     }
-// }
-
 passport.use(new LocalStrategy({
     usernameField: 'id',
     passwordField: 'pw',
