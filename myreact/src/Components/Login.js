@@ -2,6 +2,7 @@ import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 import axios from "axios"
+import Title from './Title';
 
 function Login() {
     let [id, setId] = useState("")
@@ -10,9 +11,7 @@ function Login() {
     
     return (
         <div>
-            <div className='title'>
-                <h1 className='homeFont'> To Do List </h1>
-            </div>
+            <Title />
 
             <LoginForm id={id} setId={setId} pw={pw} setPw={setPw} />
         </div>

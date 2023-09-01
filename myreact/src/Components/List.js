@@ -5,6 +5,8 @@ import axios from "axios"
 import { MdDone } from 'react-icons/md'
 
 import {changeDate, changeTitle, addTodo, fetchChecked} from './Function'
+import Title from './Title';
+
 
 
 function List() {
@@ -14,18 +16,11 @@ function List() {
     let [completed, setCompleted] = useState()
     let [writer, setWriter] = useState('');
     
-    let [clock, setClock] = useState('')
 
     let navigate = useNavigate()
 
     useEffect(() => {
-        fetchTodo()
-
-        const Clock = setInterval(() => {
-            let time = new Date()
-            setClock(time.getHours() + " : " + time.getMinutes() + " : " + time.getSeconds())
-        }, 1000)
-
+        fetchTodo()        
     }, [])
     
 
@@ -40,15 +35,11 @@ function List() {
                 console.log(err) 
         })
     }
-
+    
 
     return (
         <div> 
-            <div className='title'>
-                <div className='clock'></div>
-                <h1 className='homeFont'> To Do List </h1>
-                <div className='clock'>{clock}</div>
-            </div>
+            <Title />
             {/* <p className='listTitle'> My List </p> */}
             <div className='container'>
                 <div className='inputBox'>
