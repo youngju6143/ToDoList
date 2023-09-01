@@ -6,7 +6,6 @@ import './App.css';
 import Home from './Components/Home'
 import List from './Components/List'
 import Login from './Components/Login'
-import Mypage from './Components/Mypage'
 
 
 function App() {
@@ -16,8 +15,7 @@ function App() {
       <Route path='/' element={<Home></Home>} />
       <Route path='/login' element={<Login></Login>} />
       <Route path='/list' element={<List></List>} />
-      <Route path='/mypage' element={<Mypage></Mypage>} />
-      {/* <Route path="*" element={<div> 404 Not Found </div>}/>      */}
+      <Route path="*" element={<div> 404 Not Found </div>}/>     
     </Routes>
     </div>
   );

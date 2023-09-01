@@ -30,8 +30,8 @@ const addTodo = (title, date, completed, setTodo, setTitle, setDate, setComplete
     input = document.querySelector('.inputTitle')
     input.value = ''
 }
-const getChecked = (id , completed) => {
-    console.log(id)
+const fetchChecked = (id , completed) => {
+    console.log(completed)
     axios.post(`http://localhost:8000/completed/${id}`, {
         id: id,
         completed : completed
@@ -40,15 +40,5 @@ const getChecked = (id , completed) => {
     .catch((err) => {console.log(err)})
 }
 
-const getUnchecked = (id , completed) => {
-    console.log(id)
-    axios.post(`http://localhost:8000/incompleted/${id}`, {
-        id: id,
-        completed : completed
-    })
-    .then((res) => {console.log(res.data)})
-    .catch((err) => {console.log(err)})
-}
 
-
-export {changeDate, changeTitle, addTodo, getChecked, getUnchecked}
+export {changeDate, changeTitle, addTodo, fetchChecked}

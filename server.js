@@ -9,7 +9,9 @@ const session = require('express-session')
 const passport = require('passport')
 const bcrypt = require('bcrypt') // compare password
 const cookieParser = require('cookie-parser') // 마이페이지 구현할 때 사용 예정
+const helmet = require('helmet') // 웹 보안
 
+app.use(helmet()) // 웹 보안
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 app.use(session({secret: '비밀코드', resave: true, saveUninitialized: false}))
@@ -38,10 +40,39 @@ app.get('/add', (req, res) => {
 })
 
 app.post('/add', (req, res) => {
-    db.collection('post').insertOne({title: req.body.title, date: req.body.date, writer: req.user.id}, (err, result) => {
+    db.collection('post').insertOne({title: req.body.title, date: req.body.date, completed: req.body.completed, writer: req.user.id}, (err, result) => {
         res.send(result)
     })
 }) 
+
+app.post('/completed/:id', (req, res) => {
+    db.collection('post').findOne({_id: new mongodb.ObjectID(req.params.id)}, (err, result) => {
+        db.collection('post').updateOne({_id: new mongodb.ObjectID(req.params.id)}, {$set: {completed: req.body.completed}}, (err, result =>{
+            if (err)
+                res.send('completed 에러 남')
+            else {
+                console.log(req.body.completed)                
+                res.send('complete 바뀜!')
+            }
+        }))
+    })
+})
+
+// app.post('/incompleted/:id', (req, res) => {
+//     var user = req.user.id
+//     db.collection('post').findOne({_id: new mongodb.ObjectID(req.params.id)}, (err, result) => {
+//         db.collection('post').updateOne({_id: new mongodb.ObjectID(req.params.id)}, {$set: {completed: false}}, (err, result =>{
+//             if (err)
+//                 res.send('completed 에러 남')
+//             else {
+//                 console.log(req.body.completed)                
+//                 res.send('complete 바뀜!')
+//             }
+//         }))
+//     })
+// })
+
+
 
 app.delete('/delete/:id', (req, res) => {
     var user = req.user.id
@@ -124,7 +155,20 @@ passport.deserializeUser(function (id, done) {
 
 
 app.use(express.static(path.join(__dirname, 'myreact/build')));
-app.get('*', (req, res) => {
+
+
+function Logined(req, res, next) {
+    if (req.user) {
+        next()
+    } else {
+        res.send('not logined')
+    }
+}
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/myreact/build/index.html'))
+})
+app.get('*', Logined, (req, res) => {
     res.sendFile(path.join(__dirname, '/myreact/build/index.html'))
 })
 

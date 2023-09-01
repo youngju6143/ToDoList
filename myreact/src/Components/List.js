@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from "axios"
 import { MdDone } from 'react-icons/md'
 
-import {changeDate, changeTitle, addTodo, getChecked, getUnchecked} from './Function'
+import {changeDate, changeTitle, addTodo, fetchChecked} from './Function'
 
 
 function List() {
@@ -109,11 +109,16 @@ function ListItem({item, index, todo, setTodo}) {
         }
     }
     let [isCompleted, setIsCompleted] = useState(item.completed)
+    useEffect(() => {
+        fetchChecked(item._id, isCompleted)
+    }, [isCompleted])
+
         return (
             <div className='listItem' key={index}>
                 <button className={isCompleted ? 'completedButton' : 'incompletedButton'}
                 onClick={() => {
                     setIsCompleted(!isCompleted)
+                    console.log(isCompleted)
                 }}
                 >{isCompleted ? <MdDone/> : null}</button>
                 <div>
