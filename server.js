@@ -39,10 +39,7 @@ app.get('/add', (req, res) => {
 
 app.post('/add', (req, res) => {
     db.collection('post').insertOne({title: req.body.title, date: req.body.date, writer: req.user.id}, (err, result) => {
-        if (result.deletedCount == 0)
-            res.send('fail')
-        else
-            res.send('success')
+        res.send(result)
     })
 }) 
 
@@ -74,23 +71,23 @@ app.post('/login', passport.authenticate('local', {failureRedirect: '/login'}) ,
     res.send('success to login')  
 })
 
-app.post('/mypage/:id', (req, res) => {
-    db.collection('post').findOne({writer: req.user.id}, (err, result) => {
-        console.log(req.user.id)
-    })
-})
+// app.post('/mypage/:id', (req, res) => {
+//     db.collection('post').findOne({writer: req.user.id}, (err, result) => {
+//         console.log(req.user.id)
+//     })
+// })
 
-app.get('/mypage', Logined, (req, res) => {
-    res.send(req.user.id)
-})
+// app.get('/mypage', Logined, (req, res) => {
+//     res.send(req.user.id)
+// })
 
-function Logined(req, res, next) {
-    if (req.user) {
-        next()
-    } else {
-        res.send("Not Logined")
-    }
-}
+// function Logined(req, res, next) {
+//     if (req.user) {
+//         next()
+//     } else {
+//         res.send("Not Logined")
+//     }
+// }
 
 passport.use(new LocalStrategy({
     usernameField: 'id',
@@ -133,7 +130,7 @@ function comparePasswords(inputPw, pw, callback) {
         callback(null, false);
     }
 }
-
+   
 passport.serializeUser(function (user, done) {
     done(null, user.id)
   }); // 쿠키 만듦
