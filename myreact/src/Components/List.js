@@ -28,7 +28,6 @@ function List() {
             .then((res) => { 
                 setTodo(res.data[0])
                 setWriter(res.data[1]) //req.user.id 가져옴
-                console.log(res.data)
             })
             .catch((err) => {
                 console.log(err) 
@@ -100,7 +99,6 @@ function ListItem({item, index, todo, setTodo}) {
                 copy.splice(i,1)
                 setTodo(copy)
                 alert('삭제되었습니다.')
-                console.log('res.data : ' + res.data)
             })
             .catch((err) => {
                 console.log(err)
@@ -117,7 +115,6 @@ function ListItem({item, index, todo, setTodo}) {
                 <button className={isCompleted ? 'completedButton' : 'incompletedButton'}
                 onClick={() => {
                     setIsCompleted(!isCompleted)
-                    console.log(isCompleted)
                 }}
                 >{isCompleted ? <MdDone/> : null}</button>
                 <div>

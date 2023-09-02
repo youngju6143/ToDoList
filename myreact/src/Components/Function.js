@@ -23,7 +23,6 @@ const addTodo = (title, date, completed, setTodo, setTitle, setDate, setComplete
         axios.post('http://localhost:8000/add', newTodo)
         .then((res) => {
             navigate('/list')
-            console.log(res.data)
         })
         .catch((err) => {
             console.log(err)
@@ -40,12 +39,11 @@ const addTodo = (title, date, completed, setTodo, setTitle, setDate, setComplete
     input.value = ''
 }
 const fetchChecked = (id , completed) => {
-    console.log(completed)
     axios.post(`http://localhost:8000/completed/${id}`, {
         id: id,
         completed : completed
     })
-    .then((res) => {console.log(res.data)})
+    .then((res) => {console.log('good check')})
     .catch((err) => {console.log(err)})
 }
 

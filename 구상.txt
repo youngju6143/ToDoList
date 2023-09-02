@@ -19,21 +19,23 @@
 api 구현
 필수 기능
 /               get             첫 시작 화면 페이지
-/list           post            모든 todo 보여줌
-/write          get, post       todo 작성 페이지, 작성 버튼 클릭하면 /list로 돌아감
-/delete         delete
+/add            get             DB에 있는 데이터를 보여줌
+/list/:id       post            모든 todo 보여줌
+/write          get, post       todo 작성 페이지, 작성 버튼 클릭하면 /list로 돌아감 <- /list/:id에 구현함
+/delete         delete          삭제
+/completed      post            completed(true, false)를 전달
 
 부가 기능
-/login          get, post       로그인 페이지, 로그인 버튼 클릭하면 /list로 돌아감
-/register       get, post       회원가입 페이지, 회원가입 버튼 클릭하면 /login으로 돌아감
-/search         get             검색 페이지
-/mypage/:id     get             마이페이지
+/login          post       로그인 페이지, 로그인 버튼 클릭하면 /list로 돌아감
+/register       post       회원가입 페이지, 회원가입 버튼 클릭하면 /login으로 돌아감
+/search         get             검색 페이지 <- 시간 관계상 때려침
+/mypage/:id     get             마이페이지 <- /list/:id 에 구현함
 
 
 DB 설계
 1. count : count
 2. writer : id, pw
-3. post : _id, title, date, writer
+3. post : _id, title, date, writer, completed
 
 
 8/26 할 일 (약속 이슈로 많이 하진 못 함)
@@ -72,15 +74,54 @@ fail App.js에 추가
 로그인 실패 기능 구현하기 (alert창 뜨게 하기) ⭕️
 마이페이지 구현하기
     로그인하고 그 로그인에 쓴 id를 받은 다음에
-    /list에서 todo를 작성하고 버튼 누르면 그 DB에도 writer가 들어가야 함
+    /list에서 todo를 작성하고 버튼 누르면 그 DB에도 writer가 들어가야 함 ⭕️
     : user.id 써야 하니까 쿠키 필요함 -> cookieParser 사용 ⭕️
     : DB에 req.user.id 추가 ⭕️
-    : 일단 /mypage 만들어서 임시로 되는지 확인해보고 되면은 /list 옮겨서 ㄱ
+    : 일단 /mypage 만들어서 임시로 되는지 확인해보고 되면은 /list 옮겨서 ㄱ ⭕️ 
+
+
+9/1 할 일
+완료 기능 구현하기
+    : 완료 (completed : true/false)를 각 state에 넣기 -> useState 추가, addTodo 등 todo state에 넣는 요소 추가되도록 하기 ⭕️ 
+    : 완료가 되었을 시, 체크박스에 체크 표시, 체크 표시가 되었다면 completed가 true로 바뀌면서 스타일은 음.. 고민 중(넣었음!), 아니면 alert창 넣어도 될 듯(않헤) ⭕️ 
+    : 값 넣어야 하니까 api 구현에 추가 (/completed) get, post 모두 추가 (get은 완료한 상태인지 아닌지를 받고, post는 완료가 되었음을 서버에 보내야 함) <- get 필요 없음 ⭕️ 
+mypage 관련 내용 삭제하기 (/list에 이미 구현해놓음) ⭕️ 
+/list 치고 들어갔을 때 안 들어가지게 구현하기 (/add/:id) ⭕️ 
+
+
+9/2 할 일
+예외처리 : input창에 빈칸 or 긴문장 <- 정규식 사용, 함수 만들어서 하기 : 아이디, 비번, todo 등 ⭕️ s
+crypto or bcrypt 사용해서 비번 암호화 하기
+console.log 싹 다 지우기
+
+9/3 할 일 배포하기
+
 
 언젠가 할 일
 폰트 바꾸기
-체크박스를 아이콘 사용해서 만들기 ( 버튼으로 만들어야 함 )
-실시간 시계 추가하기
-이미지 넣을 거 있으면 찾아서 넣어보기
-여러 CSS 찾아보기
+체크박스를 아이콘 사용해서 만들기 ( 버튼으로 만들어야 함 ) ⭕️
+실시간 시계 추가하기 (title 오른쪽 끝에 넣을 예정) ⭕️
+이미지 넣을 거 있으면 찾아서 넣어보기 (안 넣을 예정)
+여러 CSS 찾아보기 (나중에 따로 공부하기)
 배포하기 전에 console.log 싹 다 지우기
+crypyo or bcrypt 사용해서 비번 암호화 하기
+예외처리 
+
+웹 보안 공격 종류, 개념이랑 막는 방법
+1. SQL 인젝션 : 공격자가 보안상의 취약점 이용하여, 임의의 SQL문 주입, 실행 -> DB가 비정상적인 동작 하도록 조작
+           해결 방법 : 입력값 검증, prepared statement 구문 사용, error message 노출 금지, 웹 방화벽 사용
+
+2. XSS : 스크립트 코드 삽입하여 개발자가 고려하지 않은 기능이 작동하게 만듦
+    해결 방법 : script 문자 필터링, htmllentities 사용
+
+3. 파일 업로드 어택 : 웹쉘이라고 하는 악성 파일을 업로드하는 공격 방법 (웹쉘 : 웹을 통해 해커가 시스템 명령을 수행)
+    해결 방법 : 업로드 된 파일의 확장자가 이미지인 거 확인 후. 업로드된 내용을 바탕으로 이미지 파일을 다시 생성하여 이미지가 아닌 다른 파일들이 업로드 되는 것을 완전하게 차단
+
+4. 자바스크립트 인젝션 : 브라우저에서 자바스크립트를 삽입시키는 공격, 콘솔 통해 조작 가능
+    해결 방법 : 클라이언트에 민감한 데이터를 무방비하게 넣지 말기, 데이터 유효성 검사는 서버에서 처리
+
+5. 딕셔너리 어택 : 자주 사용하는 단어나 문장, 생일 등을 딕셔너리로 미리 만들어 놓고 이를 대입해 패스워드 알아냄
+    해결 방법 : salting 
+
+예외 처리 : input창에 빈칸 or 긴문장 <- 정규식 사용, 함수 만들어서 하기 : 아이디, 비번, todo 등
+          로그인 못 한 사람은 못 들어오게 하기 <- 

@@ -9,9 +9,12 @@ const cors = require('cors');
 const LocalStrategy = require('passport-local').Strategy //로그인
 const session = require('express-session')
 const passport = require('passport')
-const bcrypt = require('bcrypt') // compare password
+// const bcrypt = require('bcrypt') // compare password
 const cookieParser = require('cookie-parser') // 마이페이지 구현할 때 사용 예정
 const helmet = require('helmet') // 웹 보안
+// const saltRounds = 10; // bcrypt 해싱에 사용될 salt 라운드 수
+const http = require('http').createServer(app)
+
 
 app.use(helmet()) // 웹 보안
 app.use(express.json());
@@ -28,15 +31,14 @@ MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true } ,function(e
     if (err) return console.log(err)
     db = client.db('toyProject')
 
-    app.listen(8000, function() {
-        console.log('listening on 8000')
+    http.listen(process.env.PORT, function() {
+        console.log('listening on 8080')
     })
 }) 
 
 app.get('/add', (req, res) => {
     var user = req.user.id
     db.collection('post').find().toArray((err, result) => {
-        console.log(user) // => 잘 나와염 
         res.send([result, user])
     })
 })
@@ -53,7 +55,6 @@ app.post('/completed/:id', (req, res) => {
             if (err)
                 res.send('completed 에러 남')
             else {
-                console.log(req.body.completed)                
                 res.send('complete 바뀜!')
             }
         }))
@@ -75,16 +76,17 @@ app.post('/register', (req, res) => {
         if (result) {
             res.send('중복된 아이디 (server)')
         }
-        else (
-            db.collection('writer').insertOne({id: req.body.id, pw: req.body.pw}, (err, result) => {
-                res.send('success to register')
-            })
-        )
+        else {
+            // bcrypt.hash(req.body.pw, saltRounds, (hashErr, hashedPassword) => {
+                db.collection('writer').insertOne({id: req.body.id, pw: hashedPassword}, (err, result) => {
+                    res.send('success to register')
+                })
+            // })            
+        }
     })
 })
 
 app.post('/login', passport.authenticate('local', {failureRedirect: '/login'}) ,(req, res) => {
-    console.log('req.user : ' + req.user)
     res.send('success to login')  
 })
 
@@ -94,41 +96,24 @@ passport.use(new LocalStrategy({
     session: true,
     passReqToCallback: false, //요청 이후 설정할 거 있는 지 물어보는 거
 }, (inputId, inputPw, done) => {
-    console.log(inputId, inputPw)
     db.collection('writer').findOne({id: inputId}, (err, user) => {
-        if (err) {
-            console.error(err);
-            return done(err);
-        }
         if (user) {
             comparePasswords(inputPw, user.pw, (err, result) => {
                 if (err) {
-                    console.error(err);
                     return done(err);
                 }
                 if (result) {
-                    console.log('로그인 성공');
                     return done(null, user);
                 } else {
-                    console.log('로그인 실패 : 비밀번호 틀림');
                     return done(null, false, { message: '비밀번호가 일치하지 않습니다.' })
                 }
             })
         }
          else {
-            console.log('로그인 실패 : 존재하지 않는 아이디')
-            return done(null, false, { message: '가입되지 않았습니다.' });
+            return done(null, false, { message: '가입되어있지 않은 계정입니다.' });
         }
     })
 })) 
-
-function comparePasswords(inputPw, pw, callback) {
-    if (inputPw == pw) {
-        callback(null, true);
-    } else {
-        callback(null, false);
-    }
-}
    
 passport.serializeUser(function (user, done) {
     done(null, user.id)
@@ -139,10 +124,15 @@ passport.deserializeUser(function (id, done) {
     })
 }); 
 
-
 app.use(express.static(path.join(__dirname, 'myreact/build')));
 
-
+function comparePasswords(inputPw, pw, callback) {
+    if (inputPw == pw) {
+        callback(null, true);
+    } else {
+        callback(null, false);
+    }
+}
 function Logined(req, res, next) {
     if (req.user) {
         next()
