@@ -9,11 +9,10 @@ const cors = require('cors');
 const LocalStrategy = require('passport-local').Strategy //로그인
 const session = require('express-session')
 const passport = require('passport')
-// const bcrypt = require('bcrypt') // compare password
+const bcrypt = require('bcrypt') // compare password
 const cookieParser = require('cookie-parser') // 마이페이지 구현할 때 사용 예정
 const helmet = require('helmet') // 웹 보안
-// const saltRounds = 10; // bcrypt 해싱에 사용될 salt 라운드 수
-const http = require('http').createServer(app)
+const saltRounds = 10; // bcrypt 해싱에 사용될 salt 라운드 수
 
 
 app.use(helmet()) // 웹 보안
@@ -31,8 +30,8 @@ MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true } ,function(e
     if (err) return console.log(err)
     db = client.db('toyProject')
 
-    http.listen(process.env.PORT, function() {
-        console.log('listening on 8080')
+    app.listen(8000, function() {
+        console.log('listening on 8000')
     })
 }) 
 
@@ -77,12 +76,11 @@ app.post('/register', (req, res) => {
             res.send('중복된 아이디 (server)')
         }
         else {
-            // bcrypt.hash(req.body.pw, saltRounds, (hashErr, hashedPassword) => {
-                db.collection('writer').insertOne({id: req.body.id, pw: hashedPassword}, (err, result) => {
-                    res.send('success to register')
-                })
-            // })            
-        }
+            db.collection('writer').insertOne({id: req.body.id, pw: req.body.pw}, (err, result) => {
+                res.send('success to register')
+            })
+            
+            }
     })
 })
 
@@ -97,9 +95,14 @@ passport.use(new LocalStrategy({
     passReqToCallback: false, //요청 이후 설정할 거 있는 지 물어보는 거
 }, (inputId, inputPw, done) => {
     db.collection('writer').findOne({id: inputId}, (err, user) => {
+        if (err) {
+            console.error(err);
+            return done(err);
+        }
         if (user) {
             comparePasswords(inputPw, user.pw, (err, result) => {
                 if (err) {
+                    console.error(err);
                     return done(err);
                 }
                 if (result) {
@@ -110,11 +113,19 @@ passport.use(new LocalStrategy({
             })
         }
          else {
-            return done(null, false, { message: '가입되어있지 않은 계정입니다.' });
+            return done(null, false, { message: '가입되지 않았습니다.' });
         }
     })
 })) 
    
+function comparePasswords(inputPw, pw, callback) {
+    if (inputPw == pw) {
+        callback(null, true);
+    } else {
+        callback(null, false);
+    }
+}
+
 passport.serializeUser(function (user, done) {
     done(null, user.id)
   }); // 쿠키 만듦
@@ -124,15 +135,10 @@ passport.deserializeUser(function (id, done) {
     })
 }); 
 
+
 app.use(express.static(path.join(__dirname, 'myreact/build')));
 
-function comparePasswords(inputPw, pw, callback) {
-    if (inputPw == pw) {
-        callback(null, true);
-    } else {
-        callback(null, false);
-    }
-}
+
 function Logined(req, res, next) {
     if (req.user) {
         next()
@@ -140,6 +146,7 @@ function Logined(req, res, next) {
         res.send('not logined')
     }
 }
+ 
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/myreact/build/index.html'))

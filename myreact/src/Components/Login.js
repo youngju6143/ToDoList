@@ -49,9 +49,9 @@ function LoginForm(props) {
                 </div>
 
                 <button type="submit" className="submitButton" onClick={() => {
-                    axios.post('https://localhost:8000/login', {id: props.id, pw: props.pw})
+                    axios.post('http://localhost:8000/login', {id: props.id, pw: props.pw})
                     .then((result) => {
-                        if (result) {
+                        if (result.data == 'success to login') {
                             alert('로그인에 성공했습니다!')
                             navigate('/list')
                         }
@@ -85,6 +85,7 @@ function LoginForm(props) {
                 </div>
 
                 <button type="submit" className="submitButton" onClick={() => {
+
                     if(regexUser.test(props.id) && regexUser.test(props.pw)) {
                         axios.post('http://localhost:8000/register', {id: props.id, pw: props.pw})
                         .then((result2) => {
