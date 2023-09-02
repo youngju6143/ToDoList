@@ -7,6 +7,9 @@ const changeDate = (e, setDate) => {
     setDate(e.target.value)
 }
 const addTodo = (title, date, completed, setTodo, setTitle, setDate, setCompleted, navigate) => {
+    const regexTodo =  /^(?=.*[a-zA-Z0-9!@#$%^&*()_+])(.{1,12})$/
+    const regexDate = /^(?!\s*$).+/
+
     const newTodo = {
         title: title,
         date: date,
@@ -16,14 +19,20 @@ const addTodo = (title, date, completed, setTodo, setTitle, setDate, setComplete
     setTitle('');
     setDate('');
 
-    axios.post('http://localhost:8000/add', newTodo)
+    if (regexTodo.test(newTodo.title) && regexDate.test(newTodo.date)) {
+        axios.post('http://localhost:8000/add', newTodo)
         .then((res) => {
             navigate('/list')
             console.log(res.data)
         })
         .catch((err) => {
             console.log(err)
-    })
+        })
+    }
+    else {
+        alert('날짜 또는 todo를 입력하지 않았습니다!')
+    }
+    
 
     let input = document.querySelector('.inputDate')
     input.value = ''
@@ -39,6 +48,5 @@ const fetchChecked = (id , completed) => {
     .then((res) => {console.log(res.data)})
     .catch((err) => {console.log(err)})
 }
-
 
 export {changeDate, changeTitle, addTodo, fetchChecked}
