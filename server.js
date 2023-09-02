@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const app = express()
 const path = require('path')
@@ -22,7 +24,7 @@ app.use(passport.session()) //로그인 세션을 위해 쓴 미들웨어
 
 
 var db;
-MongoClient.connect('mongodb+srv://youngju6143:dudwn0428!@youngju.tcx4coy.mongodb.net/?retryWrites=true&w=majority', { useUnifiedTopology: true } ,function(err, client) {
+MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true } ,function(err, client) {
     if (err) return console.log(err)
     db = client.db('toyProject')
 
@@ -57,22 +59,6 @@ app.post('/completed/:id', (req, res) => {
         }))
     })
 })
-
-// app.post('/incompleted/:id', (req, res) => {
-//     var user = req.user.id
-//     db.collection('post').findOne({_id: new mongodb.ObjectID(req.params.id)}, (err, result) => {
-//         db.collection('post').updateOne({_id: new mongodb.ObjectID(req.params.id)}, {$set: {completed: false}}, (err, result =>{
-//             if (err)
-//                 res.send('completed 에러 남')
-//             else {
-//                 console.log(req.body.completed)                
-//                 res.send('complete 바뀜!')
-//             }
-//         }))
-//     })
-// })
-
-
 
 app.delete('/delete/:id', (req, res) => {
     var user = req.user.id
