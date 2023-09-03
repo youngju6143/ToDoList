@@ -7,7 +7,6 @@ import { MdDone } from 'react-icons/md'
 import {changeDate, changeTitle, addTodo, fetchChecked} from './Function'
 import Title from './Title';
 
-
 function List() {
     let [date, setDate] = useState("")
     let [title, setTitle] = useState("")
