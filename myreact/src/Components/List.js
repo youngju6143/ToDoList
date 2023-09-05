@@ -23,7 +23,7 @@ function List() {
     
 
     const fetchTodo = () => {
-        axios.get('http://localhost:8000/add')  
+        axios.get('/add')  
             .then((res) => { 
                 setTodo(res.data[0])
                 setWriter(res.data[1]) //req.user.id 가져옴
@@ -92,7 +92,7 @@ function ListItem({item, index, todo, setTodo}) {
 
     const deleteTodo = (id, i) => {
         if(window.confirm('정말 삭제할까요?')) {
-            axios.delete(`http://localhost:8000/delete/${id}`)
+            axios.delete(`/delete/${id}`)
             .then((res) => { 
                 let copy = [...todo]
                 copy.splice(i,1)

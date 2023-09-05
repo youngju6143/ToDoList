@@ -20,7 +20,7 @@ const addTodo = (title, date, completed, setTodo, setTitle, setDate, setComplete
     setDate('');
 
     if (regexTodo.test(newTodo.title) && regexDate.test(newTodo.date)) {
-        axios.post('http://localhost:8000/add', newTodo)
+        axios.post('/add', newTodo)
         .then((res) => {
             navigate('/list')
         })
@@ -39,7 +39,7 @@ const addTodo = (title, date, completed, setTodo, setTitle, setDate, setComplete
     input.value = ''
 }
 const fetchChecked = (id , completed) => {
-    axios.post(`http://localhost:8000/completed/${id}`, {
+    axios.post(`/completed/${id}`, {
         id: id,
         completed : completed
     })

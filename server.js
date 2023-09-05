@@ -30,8 +30,8 @@ MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true } ,function(e
     if (err) return console.log(err)
     db = client.db('toyProject')
 
-    app.listen(8000, function() {
-        console.log('listening on 8000')
+    app.listen(process.env.PORT, function() {
+        console.log('success listening')
     })
 }) 
 
