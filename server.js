@@ -15,7 +15,24 @@ const helmet = require('helmet') // 웹 보안
 const saltRounds = 10; // bcrypt 해싱에 사용될 salt 라운드 수
 
 
-app.use(helmet()) // 웹 보안
+const cspOptions = {
+    directives: {
+      // 헬멧 기본 옵션 가져오기
+      ...helmet.contentSecurityPolicy.getDefaultDirectives(), // 기본 헬멧 설정 객체를 리턴하는 함수를 받아 전개 연산자로 삽입
+    
+      // 구글 API 도메인과 인라인 스크립트, eval 스크립트를 허용
+      "connect-src": ["'self'"],
+        
+      // 소스에 https와 http 허용
+      "base-uri" : ["/", "http:"],
+    }
+  }
+  
+  // Helmet의 모든 기능 사용. (contentSecurityPolicy에는 custom option 적용)
+  app.use(helmet({
+    contentSecurityPolicy: cspOptions,
+  })); // 웹 보안
+  
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 app.use(session({secret: '비밀코드', resave: true, saveUninitialized: false}))
