@@ -72,7 +72,7 @@ app.delete('/delete/:id', (req, res) => {
 app.post('/register', (req, res) => {
     db.collection('writer').findOne({id: req.body.id}, (err, result) => { 
         if (result) {
-            res.send('중복된 아이디 (server)')
+            res.status(200).send('중복된 아이디 (server)')
         }
         else {
             db.collection('writer').insertOne({id: req.body.id, pw: req.body.pw}, (err, result) => {
