@@ -76,7 +76,7 @@ app.post('/register', (req, res) => {
         }
         else {
             db.collection('writer').insertOne({id: req.body.id, pw: req.body.pw}, (err, result) => {
-                res.send('success to register')
+                res.status(200).send('success to register')
             })
             
             }
@@ -84,7 +84,7 @@ app.post('/register', (req, res) => {
 })
 
 app.post('/login', passport.authenticate('local', {failureRedirect: '/login'}) ,(req, res) => {
-    res.send('success to login')  
+    res.status(200).send('success to login')  
 })
 
 passport.use(new LocalStrategy({

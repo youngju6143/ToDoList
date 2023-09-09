@@ -35,6 +35,7 @@ function LoginForm(props) {
                         props.setId(e.target.value) 
                     }}
                     type="text" 
+                    name="id"
                     placeholder="아이디" 
                     className='inputDate'></input>
                 </div>
@@ -44,6 +45,7 @@ function LoginForm(props) {
                         props.setPw(e.target.value) 
                     }}
                     type="password" 
+                    name="pw"
                     placeholder="비밀번호" 
                     className='inputDate'></input>
                 </div>
@@ -71,6 +73,7 @@ function LoginForm(props) {
                         props.setId(e.target.value)
                     }}
                     type="text" 
+                    name="id"
                     placeholder="아이디" 
                     className='inputDate'></input>
                 </div>
@@ -80,6 +83,7 @@ function LoginForm(props) {
                         props.setPw(e.target.value) 
                     }}
                     type="password" 
+                    name="pw"
                     placeholder="비밀번호" 
                     className='inputDate'></input>
                 </div>
